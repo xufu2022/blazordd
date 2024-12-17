@@ -1,0 +1,56 @@
+﻿@attribute [RenderModeInteractiveAuto]
+@inject ILogger<MyForm> log
+
+<h3 class="mb-3">My Form</h3>
+
+<EditForm Enhance Model="Person" method="post" FormName="personForm" OnValidSubmit="SubmitForm">
+    <DataAnnotationsValidator />
+
+    <div>
+        <label>First Name</label>
+        <InputText @bind-Value="Person.FirstName" DisplayName="First Name" />
+        <ValidationMessage For="@(() => Person.FirstName)" />
+    </div>
+    <div class="mb-3">
+        <label>Last Name</label>
+        <InputText @bind-Value="Person.LastName" />
+        <ValidationMessage For="@(() => Person.LastName)" />
+     </div>
+
+     <InputFile OnChange="LoadFile" multiple /> <br />
+     
+    <button class="btn btn-primary my-3" type="submit">Add Person</button>
+</EditForm>
+
+<ul>
+    @foreach(var f in files)
+    {
+        <li>@f.Name (@f.Size)</li>
+    }
+</ul>
+
+ @code {
+    [SupplyParameterFromForm]
+    private PersonModel Person { get; set; } = new();
+
+    private List<PersonModel> people = new();
+    private List<IBrowserFile> files = new();
+    private int maxFiles = 5;
+
+    private void SubmitForm()
+    {
+        log.LogInformation($"{Person.FirstName} {Person.LastName}");
+        people.Add(Person);
+        Person = new();
+    }
+
+    private void LoadFile(InputFileChangeEventArgs e)
+    {
+        files.Clear();
+
+        foreach (var file in e.GetMultipleFiles(maxFiles))
+        {
+            files.Add(file);
+        }
+    }
+}

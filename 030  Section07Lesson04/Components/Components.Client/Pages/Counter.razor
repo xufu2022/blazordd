@@ -1,0 +1,28 @@
+﻿@page "/counter"
+@attribute [RenderModeInteractiveAuto]
+@inject NavigationManager Navigation
+
+<PageTitle>Counter</PageTitle>
+
+<h1>Counter</h1>
+
+<p role="status">Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<button class="btn btn-primary" @onclick="GoToBetterCounter">Go To Better Counter</button>
+
+@code {
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+
+    private void GoToBetterCounter()
+    {
+        //Navigation.NavigateTo("BetterCounter/Tim?val=35");
+        //Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("val", 42));
+        Navigation.NavigateTo("Start#specialLine");
+    }
+}

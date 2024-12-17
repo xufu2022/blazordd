@@ -1,0 +1,45 @@
+﻿@attribute [RenderModeInteractiveAuto]
+@inject ILogger<MyForm> log
+
+<h3>My Form</h3>
+
+<EditForm Enhance Model="Person" method="post" FormName="personForm" OnValidSubmit="SubmitForm">
+    <DataAnnotationsValidator />
+
+    <div>
+        <label>First Name</label>
+        <InputText @bind-Value="Person.FirstName" DisplayName="First Name" />
+        <ValidationMessage For="@(() => Person.FirstName)" />
+    </div>
+    <div>
+        <label>Last Name</label>
+        <InputText @bind-Value="Person.LastName" />
+        <ValidationMessage For="@(() => Person.LastName)" />
+     </div>
+     <div>
+         <label>Life Story</label>
+         <InputTextArea @bind-Value="Person.LifeStory" rows="4" />
+     </div>
+    <button class="btn btn-primary" type="submit">Add Person</button>
+</EditForm>
+
+<ul>
+    @foreach (var p in people)
+    {
+        <li>@p.FirstName @p.LastName</li>
+    }
+</ul>
+
+ @code {
+    [SupplyParameterFromForm]
+    private PersonModel Person { get; set; } = new();
+
+    private List<PersonModel> people = new();
+
+    private void SubmitForm()
+    {
+        log.LogInformation($"{Person.FirstName} {Person.LastName}");
+        people.Add(Person);
+        Person = new();
+    }
+}

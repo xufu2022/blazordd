@@ -1,0 +1,79 @@
+﻿@attribute [RenderModeInteractiveAuto]
+@inject ILogger<MyForm> log
+
+<h3 class="mb-3">My Form</h3>
+
+<EditForm Enhance Model="Person" method="post" FormName="personForm" OnValidSubmit="SubmitForm">
+    <DataAnnotationsValidator />
+
+    <div>
+        <label>First Name</label>
+        <InputText @bind-Value="Person.FirstName" DisplayName="First Name" />
+        <ValidationMessage For="@(() => Person.FirstName)" />
+    </div>
+    <div class="mb-3">
+        <label>Last Name</label>
+        <InputText @bind-Value="Person.LastName" />
+        <ValidationMessage For="@(() => Person.LastName)" />
+     </div>
+     <div class="mb-3">
+         <label>Life Story</label>
+         <InputTextArea @bind-Value="Person.LifeStory" rows="4" />
+     </div>
+     <div>
+         <label>Is Enrolled</label>
+         <InputCheckbox @bind-Value="Person.IsEnrolled" />
+     </div>
+     <div class="mb-3">
+         <label>Date of Birth</label>
+         <InputDate @bind-Value="Person.DateOfBirth" />
+     </div>
+     <div class="mb-3">
+         <label>My Number</label>
+         <InputNumber @bind-Value="Person.MyNumber" />
+         <ValidationMessage For="@(() => Person.MyNumber)" />
+     </div>
+     <div class="mb-3">
+         <label>Department</label>
+         <br />
+         <InputRadioGroup @bind-Value="Person.Department">
+             @foreach (var dept in departments)
+            {
+                <InputRadio Value="dept" /> @dept <br />
+            }
+        </InputRadioGroup>
+     </div>
+    <div class="mb-3">
+        <label>Type of Employment</label>
+        <br />
+        <InputRadioGroup @bind-Value="Person.TypeOfEmployment">
+            @foreach (var toe in Enum.GetValues<EmployeeType>())
+            {
+                <InputRadio Value="toe" /> @toe.ToString() <br />
+            }
+        </InputRadioGroup>
+    </div>
+    <button class="btn btn-primary mb-3" type="submit">Add Person</button>
+</EditForm>
+
+<ul>
+    @foreach (var p in people)
+    {
+        <li>@p.FirstName @p.LastName</li>
+    }
+</ul>
+
+@code {
+    [SupplyParameterFromForm]
+    private PersonModel Person { get; set; } = new();
+
+    private List<PersonModel> people = new();
+    private List<string> departments = new() { "HR", "IT", "Accounting", "Sales" };
+
+    private void SubmitForm()
+    {
+        log.LogInformation($"{Person.FirstName} {Person.LastName}");
+        people.Add(Person);
+        Person = new();
+    }
+}

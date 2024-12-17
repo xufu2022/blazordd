@@ -1,0 +1,20 @@
+﻿@page "/"
+@inject IDemoDependency demo
+@inject IConfiguration config
+
+<PageTitle>Home</PageTitle>
+
+<HeadContent>
+    <meta name="description" content="This is the description for the home page">
+</HeadContent>
+
+<h1>Hello, everyone!</h1>
+<h2>@demo.GiveRandomNumber()</h2>
+<h2>@config.GetConnectionString("Default")</h2>
+<h3>Workday: @(config.GetValue<string>("WorkDaysPerWeek"))</h3>
+<h3>@(config.GetValue<string>("Company:Name"))</h3>
+
+Welcome to your new app.
+
+<Counter />
+

@@ -1,0 +1,15 @@
+﻿@* @page "/page"
+@page "/pages/page" *@
+@attribute [RenderModeInteractiveAuto]
+@attribute [Route(nameof(Start))]
+@inject NavigationManager Navigation
+
+<h3>Start</h3>
+<button class="btn btn-primary" @onclick="GoToCounter">Go To Counter</button>
+
+@code {
+    private void GoToCounter()
+    {
+        Navigation.NavigateTo("Counter");
+    }
+}

@@ -1,0 +1,24 @@
+﻿@page "/BetterCounter"
+@attribute [RenderModeInteractiveAuto]
+
+<PageTitle>Better Counter</PageTitle>
+
+<h1>Better Counter</h1>
+<h2>The current count is @counterValue</h2>
+
+@if (counterValue < 5)
+{
+    <Counter OnCounterChange="UpdateCounter" />
+}
+
+@code {
+    private int counterValue;
+
+    private void UpdateCounter(int val)
+    {
+        counterValue = val;
+    }
+}
+
+@code {
+}
